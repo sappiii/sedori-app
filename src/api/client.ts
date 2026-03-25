@@ -1,6 +1,6 @@
 import { Product } from '../types'
 
-const BASE = '/api'
+const BASE = 'https://sedori-backend-ufzf.onrender.com/api'
 
 export async function searchProducts(params: {
   query: string
