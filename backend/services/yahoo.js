@@ -18,7 +18,7 @@ async function searchYahoo(query, maxPrice) {
   }
   if (maxPrice) params.price_to = maxPrice
 
-  const { data } = await axios.get(YAHOO_API_URL, { params, timeout: 8000 })
+  const { data } = await axios.get(YAHOO_API_URL, { params, timeout: 15000 })
   return (data.hits || []).map(item => ({
     id: `yahoo_${item.code || item.externalId}`,
     name: item.name,

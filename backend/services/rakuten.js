@@ -19,7 +19,7 @@ async function searchRakuten(keyword, maxPrice) {
   }
   if (maxPrice) params.maxPrice = maxPrice
 
-  const { data } = await axios.get(RAKUTEN_API_URL, { params, timeout: 8000 })
+  const { data } = await axios.get(RAKUTEN_API_URL, { params, timeout: 15000 })
   return (data.Items || []).map(({ Item }) => ({
     id: `rakuten_${Item.itemCode}`,
     name: Item.itemName,
