@@ -12,7 +12,11 @@ app.use(express.json())
 
 app.use('/api/search', searchRoutes)
 app.use('/api/products', productsRoutes)
-app.get('/api/health', (_, res) => res.json({ status: 'ok' }))
+app.get('/api/health', (_, res) => res.json({
+  status: 'ok',
+  rakuten: process.env.RAKUTEN_APP_ID ? '設定済み' : '未設定',
+  yahoo: process.env.YAHOO_APP_ID ? '設定済み' : '未設定',
+}))
 
 app.listen(PORT, () => {
   console.log(`✅ Backend: http://localhost:${PORT}`)
