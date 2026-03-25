@@ -12,10 +12,13 @@ async function searchYahoo(query, maxPrice) {
   const params = {
     appid: appId,
     query,
-    results: 15,
+    results: 20,
     sort: '+price',
   }
-  if (maxPrice) params.price_to = maxPrice
+  if (maxPrice) {
+    params.price_to = maxPrice
+    params.price_from = Math.floor(maxPrice * 0.4) // Amazon価格の40%以上の商品のみ
+  }
 
   const { data } = await axios.get(YAHOO_API_URL, { params, timeout: 15000 })
   return (data.hits || []).map(item => ({
