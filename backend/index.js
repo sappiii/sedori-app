@@ -18,6 +18,16 @@ app.get('/api/health', (_, res) => res.json({
   yahoo: process.env.YAHOO_APP_ID ? '設定済み' : '未設定',
 }))
 
+app.get('/api/debug-yahoo', async (_, res) => {
+  const { searchYahoo } = require('./services/yahoo')
+  try {
+    const results = await searchYahoo('Nintendo Switch', 55000)
+    res.json({ count: results.length, results })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
 app.listen(PORT, () => {
   console.log(`✅ Backend: http://localhost:${PORT}`)
   console.log(`   楽天API: ${process.env.RAKUTEN_APP_ID ? '✅ 設定済み' : '⚠️  未設定（モックデータ使用）'}`)
