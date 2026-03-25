@@ -38,6 +38,11 @@ router.post('/', async (req, res) => {
   console.log('[Search] raw results per source:', rawResults.map(r => r.length))
   const results = rawResults.flat()
   console.log('[Search] total before profit filter:', results.length)
+  if (results.length > 0) {
+    const sample = results[0]
+    const fees = Math.round(amazonPrice * rate)
+    console.log('[Search] sample:', { purchasePrice: sample.purchasePrice, amazonPrice, fees, profit: amazonPrice - sample.purchasePrice - fees })
+  }
 
   const withProfit = results
     .map(item => {
