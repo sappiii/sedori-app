@@ -14,23 +14,26 @@ async function searchYahoo(query, maxPrice) {
     query,
     results: 20,
     sort: '+price',
+    condition: 'new',
   }
   if (maxPrice) {
     params.price_to = maxPrice
-    params.price_from = Math.floor(maxPrice * 0.4) // Amazon価格の40%以上の商品のみ
+    params.price_from = Math.floor(maxPrice * 0.4)
   }
 
   const { data } = await axios.get(YAHOO_API_URL, { params, timeout: 15000 })
-  return (data.hits || []).map(item => ({
-    id: `yahoo_${item.code || item.externalId}`,
-    name: item.name,
-    imageUrl: item.image?.medium || '',
-    shopName: item.seller?.name || '',
-    purchasePrice: item.price,
-    purchaseUrl: item.url,
-    marketplace: 'yahoo',
-    inStock: item.inStock !== false,
-  }))
+  return (data.hits || [])
+    .filter(item => item.condition === 'new')
+    .map(item => ({
+      id: `yahoo_${item.code || item.externalId}`,
+      name: item.name,
+      imageUrl: item.image?.medium || '',
+      shopName: item.seller?.name || '',
+      purchasePrice: item.price,
+      purchaseUrl: item.url,
+      marketplace: 'yahoo',
+      inStock: item.inStock !== false,
+    }))
 }
 
 function getMockData(query) {
