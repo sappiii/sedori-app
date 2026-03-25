@@ -13,8 +13,7 @@ async function searchYahoo(query, maxPrice) {
     appid: appId,
     query,
     results: 15,
-    sort: 'priceAsc',
-    in_stock: 1,
+    sort: '+price',
   }
   if (maxPrice) params.price_to = maxPrice
 
