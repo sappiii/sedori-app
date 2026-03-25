@@ -23,7 +23,7 @@ const PROFIT_CONFIG: Record<string, { label: string; bg: string; color: string }
 
 export function ProductCard({ product, detailed, onToggleSave }: Props) {
   const [hovered, setHovered] = useState(false)
-  const mp = MP_CONFIG[product.marketplace] ?? MP_CONFIG.amazon
+  const mp = MP_CONFIG[product.marketplace ?? product.sourceMarketplace ?? 'amazon'] ?? MP_CONFIG.amazon
   const pl = PROFIT_CONFIG[product.profitLevel] ?? PROFIT_CONFIG.low
 
   const openLink = (type: 'source' | 'amazon' | 'mercari') => {
@@ -87,7 +87,7 @@ export function ProductCard({ product, detailed, onToggleSave }: Props) {
               </span>
               <span
                 className="badge"
-                style={{ background: `rgba(${mp.color.replace('#','').match(/.{2}/g)?.map(h=>parseInt(h,16)).join(',')},0.15)`, color: mp.color, border: `1px solid ${mp.glow}` }}
+                style={{ background: `rgba(${mp.color.replace('#','').match(/.{2}/g)?.map((h: string)=>parseInt(h,16)).join(',')},0.15)`, color: mp.color, border: `1px solid ${mp.glow}` }}
               >
                 {mp.label}
               </span>

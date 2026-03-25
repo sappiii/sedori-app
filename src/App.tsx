@@ -91,7 +91,7 @@ export default function App() {
     const minR = parseInt(minRate) || 0
     const filtered = source.filter(p =>
       p.profit >= minP && p.profitRate >= minR &&
-      (selectedMP.length === 0 || selectedMP.includes(p.marketplace))
+      (selectedMP.length === 0 || selectedMP.includes(p.marketplace ?? p.sourceMarketplace ?? 'amazon'))
     )
     return [...filtered].sort((a, b) => {
       if (sortKey === 'profit') return b.profit - a.profit

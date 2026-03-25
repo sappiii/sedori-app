@@ -6,13 +6,13 @@ export type Tab = 'search' | 'saved'
 export interface Product {
   id: string
   name: string
-  imageUrl: string
-  shopName: string
+  imageUrl?: string
+  shopName?: string
   isNew: boolean
   profitLevel: ProfitLevel
-  marketplace: Marketplace
+  marketplace?: Marketplace
   purchasePrice: number
-  purchaseUrl: string
+  purchaseUrl?: string
   amazonPrice: number
   profit: number
   profitRate: number
@@ -23,4 +23,5 @@ export interface Product {
   saved: boolean
   fees: number
   notes?: string
+  sourceMarketplace?: Marketplace
 }
