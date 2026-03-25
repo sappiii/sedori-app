@@ -21,14 +21,19 @@ app.get('/api/health', (_, res) => res.json({
 app.get('/api/debug-yahoo', async (_, res) => {
   const axios = require('axios')
   const appId = process.env.YAHOO_APP_ID
+  const appIdInfo = {
+    length: appId ? appId.length : 0,
+    first20: appId ? appId.slice(0,20) : 'なし',
+    last10: appId ? appId.slice(-10) : 'なし',
+  }
   try {
     const { data } = await axios.get('https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch', {
       params: { appid: appId, query: 'Nintendo Switch', results: 3 },
       timeout: 15000
     })
-    res.json({ appId: appId ? appId.slice(0,10)+'...' : 'なし', total: data.totalResultsAvailable, hits: (data.hits||[]).map(h=>({name:h.name.slice(0,30), price:h.price})) })
+    res.json({ appIdInfo, total: data.totalResultsAvailable, hits: (data.hits||[]).map(h=>({name:h.name.slice(0,30), price:h.price})) })
   } catch (err) {
-    res.status(500).json({ error: err.message, appId: appId ? appId.slice(0,10)+'...' : 'なし' })
+    res.status(500).json({ error: err.message, appIdInfo })
   }
 })
 
