@@ -34,7 +34,10 @@ router.post('/', async (req, res) => {
     )
   }
 
-  const results = (await Promise.all(tasks)).flat()
+  const rawResults = await Promise.all(tasks)
+  console.log('[Search] raw results per source:', rawResults.map(r => r.length))
+  const results = rawResults.flat()
+  console.log('[Search] total before profit filter:', results.length)
 
   const withProfit = results
     .map(item => {
