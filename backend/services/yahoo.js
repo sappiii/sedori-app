@@ -17,12 +17,24 @@ async function searchYahoo(query, maxPrice) {
     condition: 'new',
   }
   if (maxPrice) {
-    params.price_to = maxPrice
-    params.price_from = Math.floor(maxPrice * 0.4)
+    params.price_to = Math.floor(maxPrice * 0.9)
+    params.price_from = Math.floor(maxPrice * 0.5)
   }
+
+  // アクセサリー・周辺機器を除外するキーワード
+  const ACCESSORY_KEYWORDS = [
+    '充電器', 'ケース', 'カバー', 'ストラップ', 'スキン', 'デカール',
+    'フィルム', '保護', 'スタンド', 'ホルダー', 'アダプター', 'ケーブル',
+    'イヤーピース', 'イヤーチップ', 'シリコン', '互換', '対応', 'ワイヤレス充電',
+    'クリーナー', 'クリーニング', '収納', 'ポーチ', 'バッグ'
+  ]
 
   const { data } = await axios.get(YAHOO_API_URL, { params, timeout: 15000 })
   return (data.hits || [])
+    .filter(item => {
+      const name = item.name || ''
+      return !ACCESSORY_KEYWORDS.some(kw => name.includes(kw))
+    })
     .map(item => ({
       id: `yahoo_${item.code || item.externalId}`,
       name: item.name,
