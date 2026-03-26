@@ -2,6 +2,32 @@ import { Product } from '../types'
 
 const BASE = 'https://sedori-backend-ufzf.onrender.com/api'
 
+export async function autoScan(params: {
+  minProfit?: number
+  minProfitRate?: number
+  feeRate?: number
+  categories?: string
+}): Promise<{ results: Product[], total: number, scannedCount: number, hitCount: number }> {
+  const query = new URLSearchParams()
+  if (params.minProfit !== undefined) query.set('minProfit', String(params.minProfit))
+  if (params.minProfitRate !== undefined) query.set('minProfitRate', String(params.minProfitRate))
+  if (params.feeRate !== undefined) query.set('feeRate', String(params.feeRate))
+  if (params.categories) query.set('categories', params.categories)
+  const res = await fetch(`${BASE}/scan?${query.toString()}`)
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error((err as { error?: string }).error || 'スキャンに失敗しました')
+  }
+  const data = await res.json() as { results: Record<string, unknown>[], total: number, scannedCount: number, hitCount: number }
+  return {
+    ...data,
+    results: (data.results || []).map((r: Record<string, unknown>) => ({
+      ...r,
+      sourceMarketplace: r.marketplace,
+    })) as Product[],
+  }
+}
+
 export async function searchProducts(params: {
   query: string
   amazonPrice: number

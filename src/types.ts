@@ -24,4 +24,7 @@ export interface Product {
   fees: number
   notes?: string
   sourceMarketplace?: Marketplace
+  category?: string
+  keyword?: string
+  asin?: string
 }

@@ -3,6 +3,7 @@ const express = require('express')
 const cors = require('cors')
 const searchRoutes = require('./routes/search')
 const productsRoutes = require('./routes/products')
+const scanRouter = require('./routes/scan')
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -12,6 +13,7 @@ app.use(express.json())
 
 app.use('/api/search', searchRoutes)
 app.use('/api/products', productsRoutes)
+app.use('/api/scan', scanRouter)
 app.get('/api/health', (_, res) => res.json({
   status: 'ok',
   rakuten: process.env.RAKUTEN_APP_ID ? '設定済み' : '未設定',
